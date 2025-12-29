@@ -13,7 +13,7 @@ RAW_DATA_DIR.mkdir (parents=True, exist_ok=True)
 
 PAGE_LIMIT = 1000
 
-API_URL = "https://data.cityofchicago.org/resource/t2rn-p8d7.json"
+API_URL = "https://data.cityofchicago.org/resource/n4j6-wkkf.json"
 OUTPUT_FILE = RAW_DATA_DIR/"chicago_traffic_raw.json"
 
 def extract_chicago_traffic():
