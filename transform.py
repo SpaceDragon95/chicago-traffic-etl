@@ -79,6 +79,27 @@ def normalize_column_names(df):
     df=df.rename(columns=RENAME_MAP)
 
     # ----- Enforce canonical column presence
+
+    REQUIRED_COLUMNS =[
+        "segment_id",
+        "direction",
+        "from_street",
+        "to_street",
+        "length_miles",
+        "starting_heading",
+        "from_lon",
+        "from_lat",
+        "to_lon",
+        "to_lat",
+        "current_speed",
+        "last_update",
+        ]
+    
+    missing = set(REQUIRED_COLUMNS) - set(df.columns)
+
+    if missing:
+        raise ValueError(f"Missing required columns: {missing}")
+
     return df
 
 # ====================
