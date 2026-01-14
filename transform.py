@@ -3,6 +3,7 @@ Canonical transform functions for Chicago traffic ETL.
 """
 import pandas as pd
 from pathlib import Path
+from datetime import datetime, timezone
 
 if __name__ == "__main__":
     data_path = Path("data/raw/chicago_traffic_raw.json")
@@ -58,7 +59,8 @@ DERIVE_COLUMNS =[
 # ====================
 def normalize_column_names(df):
     """
-    Rename raw source fields to canonical schema names.
+    Rename raw source fields to canonical schema names
+    and enforce required canonical column presence.    
     """
          
     RENAME_MAP={
@@ -107,10 +109,15 @@ def normalize_column_names(df):
 # ====================
 
 def add_snapshot_timestamp(df):
+    """
+    Add a UTC snapshot timestamp representing when the pipeline ran.
+    """
 
-    pass
+    snapshot_ts = datetime.now(timezone.utc)
+    df["snapshot_ts_utc"] = snapshot_ts
 
-
+    return df
+    
 # ====================
 # Transform functions
 # ====================
@@ -163,10 +170,13 @@ def derive_features(df):
 # Pipeline execution
 # ====================
 
-# df = normalize_column_names(df)
-# df = add_snapshot_timestamp(df)
-# df = standardize_strings(df)
-# df = cast_numeric(df)
-# df = parse_datetimes(df)
-# df = canonicalize_ids(df)
-# df = derive_features(df)
+if __name__ == "__main__":
+    df = pd.read_json(data_path)
+    df = normalize_column_names(df)
+    df = add_snapshot_timestamp(df)
+    # df = standardize_strings(df)
+    # df = cast_numeric(df)
+    # df = parse_datetimes(df)
+    # df = canonicalize_ids(df)
+    # df = derive_features(df)
+
