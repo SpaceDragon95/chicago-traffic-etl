@@ -123,14 +123,21 @@ def add_snapshot_timestamp(df):
 # ====================
 
 def canonicalize_ids(df):
-    # ---- Guardrails
+    """
+    Canonicalize identifier fields for consistent downstream use.
 
-    # ----- Universal ID cleanup
- 
-    # ----- Parse ID text
+    """
 
-    # ----- Cast ID column
-    pass
+    if "segment_id" not in df.columns:
+        raise ValueError("segment_id column is missing")
+
+    df["segment_id"] = (
+        df["segment_id"]
+        .astype(str)
+        .str.strip()
+    )
+
+    return df
 
 def standardize_strings(df):
     # ---- Guardrails
