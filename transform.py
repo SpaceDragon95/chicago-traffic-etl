@@ -5,7 +5,7 @@ import pandas as pd
 from pathlib import Path
 
 if __name__ == "__main__":
-    data_path = Path("data/raw/chicago_traffic.json")
+    data_path = Path("data/raw/chicago_traffic_raw.json")
 
     df = pd.read_json(data_path)
 
@@ -13,7 +13,8 @@ if __name__ == "__main__":
 # Schema/ columns groups
 # ====================
 
-STRING_COLUMNS =["street",
+STRING_COLUMNS =[
+    "street",
     "direction",
     "from_street",
     "to_street",
@@ -21,12 +22,14 @@ STRING_COLUMNS =["street",
     "comments",
     ]
 
-TITLE_CASE_COLUMNS =["street",
+TITLE_CASE_COLUMNS =[
+    "street",
     "from_street",
     "to_street",
     ]
 
-NUMERIC_TEXT_COLUMNS =["length_miles",
+NUMERIC_TEXT_COLUMNS =[
+    "length_miles",
     "from_lon",
     "from_lat",
     "to_lon",
@@ -34,28 +37,49 @@ NUMERIC_TEXT_COLUMNS =["length_miles",
     "current_speed",
     ]
 
-FLOAT_COLUMNS =["length_miles",
+FLOAT_COLUMNS =[
+    "length_miles",
     "from_lon",
     "from_lat",
     "to_lon",
     "to_lat",
     ]
 
-DATETIME_COLUMNS =["last_update",
+DATETIME_COLUMNS =[
+    "last_update",
 ]
 
-DERIVE_COLUMNS =["length_meters",
+DERIVE_COLUMNS =[
+    "length_meters",
 ]
 
 # ====================
 # Schema normalization
 # ====================
 def normalize_column_names(df):
+    """
+    Rename raw source fields to canonical schema names.
+    """
+         
+    RENAME_MAP={
+        'segmentid': 'segment_id',
+        '_direction': 'direction',
+        '_fromst': 'from_street',
+        '_tost': 'to_street',
+        '_length': 'length_miles',
+        '_strheading': 'starting_heading',
+        'start_lon': 'from_lon',
+        '_lif_lat': 'from_lat',
+        '_lit_lon': 'to_lon',
+        '_lit_lat': 'to_lat',
+        '_traffic': 'current_speed',
+        '_last_updt': 'last_update',
+        }
 
-    # ----- Rename raw source fields to canonical names
+    df=df.rename(columns=RENAME_MAP)
 
     # ----- Enforce canonical column presence
-    pass
+    return df
 
 # ====================
 # Canonical metadata
