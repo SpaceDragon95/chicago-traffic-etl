@@ -47,6 +47,10 @@ NUMERIC_TEXT_COLUMNS =[
     "current_speed",
     ]
 
+INTERGER_COLUMNS =[
+    "current_speed"
+]
+
 FLOAT_COLUMNS =[
     "length_miles",
     "from_lon",
@@ -168,11 +172,20 @@ def standardize_strings(df):
 
 def cast_numeric(df):
     # ----- Universal numeric cleanup
+    df[NUMERIC_TEXT_COLUMNS] = df[NUMERIC_TEXT_COLUMNS].apply(
+        lambda col: col.str.strip()
+    )
 
     # ----- Parse numeric text
+    df[NUMERIC_TEXT_COLUMNS] = df[NUMERIC_TEXT_COLUMNS].apply (
+        lambda col: pd.to_numeric(col, errors="coerce")
+    )
 
-    # ----- Cast integer columns
-    pass
+    # ----- Cast integer and float columns
+    df[INTERGER_COLUMNS] = df[INTERGER_COLUMNS].astype("Int64")
+    df[FLOAT_COLUMNS] = df[FLOAT_COLUMNS].astype("float")
+
+    return df
 
 def parse_datetimes(df):
     # ---- Guardrails
@@ -199,7 +212,7 @@ if __name__ == "__main__":
     df = normalize_column_names(df)
     df = add_snapshot_timestamp(df)
     df = standardize_strings(df)
-    # df = cast_numeric(df)
+    df = cast_numeric(df)
     # df = parse_datetimes(df)
     # df = canonicalize_ids(df)
     # df = derive_features(df)
