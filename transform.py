@@ -29,6 +29,15 @@ TITLE_CASE_COLUMNS =[
     "to_street",
     ]
 
+UPPER_CASE_COLUMNS =[
+    "direction",
+    "starting_heading",
+]
+
+LOWER_CASE_COLUMNS =[
+    "comments",
+]
+
 NUMERIC_TEXT_COLUMNS =[
     "length_miles",
     "from_lon",
@@ -125,7 +134,6 @@ def add_snapshot_timestamp(df):
 def canonicalize_ids(df):
     """
     Canonicalize identifier fields for consistent downstream use.
-
     """
 
     if "segment_id" not in df.columns:
@@ -139,17 +147,26 @@ def canonicalize_ids(df):
 
     return df
 
-def standardize_strings(df):
-    # ---- Guardrails
-   
+def standardize_strings(df):   
     # ----- Universal string cleanup
-    
+    df[STRING_COLUMNS] = df[STRING_COLUMNS].apply(
+        lambda col: col.str.strip()
+    )
+
+    df[STRING_COLUMNS] = df[STRING_COLUMNS].apply(
+        lambda col: col.mask(col=="", pd.NA)
+    )
+
+    df[STRING_COLUMNS] = df[STRING_COLUMNS].astype("string")
+
     # ----- Column-specific casing
-    pass
+    df[UPPER_CASE_COLUMNS] = df[UPPER_CASE_COLUMNS].str.upper()
+    df[TITLE_CASE_COLUMNS] = df[TITLE_CASE_COLUMNS].str.title()
+    df[LOWER_CASE_COLUMNS] = df[LOWER_CASE_COLUMNS].str.lower()
+
+    return df
 
 def cast_numeric(df):
-    # ---- Guardrails
-
     # ----- Universal numeric cleanup
 
     # ----- Parse numeric text
@@ -181,7 +198,7 @@ if __name__ == "__main__":
     df = pd.read_json(data_path)
     df = normalize_column_names(df)
     df = add_snapshot_timestamp(df)
-    # df = standardize_strings(df)
+    df = standardize_strings(df)
     # df = cast_numeric(df)
     # df = parse_datetimes(df)
     # df = canonicalize_ids(df)
