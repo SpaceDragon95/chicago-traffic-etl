@@ -188,16 +188,18 @@ def cast_numeric(df):
     return df
 
 def parse_datetimes(df):
-    # ---- Guardrails
-
     # ----- Universal datetime cleanup
-    
+    df[DATETIME_COLUMNS] = df[DATETIME_COLUMNS].apply(
+        lambda col: col.str.strip()
+    )
+
     # ----- Parse datetime text
-    pass
+    df[DATETIME_COLUMNS] = df[DATETIME_COLUMNS].apply (
+        lambda col: pd.to_datetime(col, errors="coerce")
+    )
+    return df
 
 def derive_features(df):
-    # ---- Guardrails
-
     # ----- Feature derivation from canonical fields
 
     # ----- Time-based features (hour, day, weekend, etc.)
@@ -213,7 +215,7 @@ if __name__ == "__main__":
     df = add_snapshot_timestamp(df)
     df = standardize_strings(df)
     df = cast_numeric(df)
-    # df = parse_datetimes(df)
+    df = parse_datetimes(df)
     # df = canonicalize_ids(df)
     # df = derive_features(df)
 
