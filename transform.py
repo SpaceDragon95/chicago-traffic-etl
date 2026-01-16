@@ -201,9 +201,12 @@ def parse_datetimes(df):
 
 def derive_features(df):
     # ----- Feature derivation from canonical fields
+    """
+    Derive canonical and analytical features from normalized fields.
+    """
+    df["length_meters"] = df["length_miles"] * 1609.344
 
-    # ----- Time-based features (hour, day, weekend, etc.)
-    pass
+    return df
 
 # ====================
 # Pipeline execution
@@ -213,9 +216,10 @@ if __name__ == "__main__":
     df = pd.read_json(data_path)
     df = normalize_column_names(df)
     df = add_snapshot_timestamp(df)
+    df = canonicalize_ids(df)
     df = standardize_strings(df)
     df = cast_numeric(df)
     df = parse_datetimes(df)
-    # df = canonicalize_ids(df)
-    # df = derive_features(df)
+    df = derive_features(df)
+    print(df[["length_miles", "length_meters"]].head())
 
