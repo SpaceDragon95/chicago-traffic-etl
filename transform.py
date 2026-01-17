@@ -47,7 +47,7 @@ NUMERIC_TEXT_COLUMNS =[
     "current_speed",
     ]
 
-INTERGER_COLUMNS =[
+INTEGER_COLUMNS =[
     "current_speed"
 ]
 
@@ -89,6 +89,7 @@ def normalize_column_names(df):
         '_lit_lat': 'to_lat',
         '_traffic': 'current_speed',
         '_last_updt': 'last_update',
+        '_comments': 'comments'
         }
 
     df=df.rename(columns=RENAME_MAP)
@@ -164,16 +165,27 @@ def standardize_strings(df):
     df[STRING_COLUMNS] = df[STRING_COLUMNS].astype("string")
 
     # ----- Column-specific casing
-    df[UPPER_CASE_COLUMNS] = df[UPPER_CASE_COLUMNS].str.upper()
-    df[TITLE_CASE_COLUMNS] = df[TITLE_CASE_COLUMNS].str.title()
-    df[LOWER_CASE_COLUMNS] = df[LOWER_CASE_COLUMNS].str.lower()
+    df[UPPER_CASE_COLUMNS] = df[UPPER_CASE_COLUMNS].apply(
+    lambda col: col.str.upper()
+    )
+
+    df[TITLE_CASE_COLUMNS] = df[TITLE_CASE_COLUMNS].apply(
+    lambda col: col.str.title()
+    )
+
+    df[LOWER_CASE_COLUMNS] = df[LOWER_CASE_COLUMNS].apply(
+    lambda col: col.str.lower()
+    )
 
     return df
 
 def cast_numeric(df):
+    """
+    Cast and normalize numeric fields from raw text.
+    """
     # ----- Universal numeric cleanup
     df[NUMERIC_TEXT_COLUMNS] = df[NUMERIC_TEXT_COLUMNS].apply(
-        lambda col: col.str.strip()
+        lambda col: col.astype("string").str.strip()
     )
 
     # ----- Parse numeric text
@@ -182,15 +194,19 @@ def cast_numeric(df):
     )
 
     # ----- Cast integer and float columns
-    df[INTERGER_COLUMNS] = df[INTERGER_COLUMNS].astype("Int64")
+    df[INTEGER_COLUMNS] = df[INTEGER_COLUMNS].astype("Int64")
+
     df[FLOAT_COLUMNS] = df[FLOAT_COLUMNS].astype("float")
 
     return df
 
 def parse_datetimes(df):
+    """
+    Parse and normalize datetime fields from raw text.
+    """
     # ----- Universal datetime cleanup
     df[DATETIME_COLUMNS] = df[DATETIME_COLUMNS].apply(
-        lambda col: col.str.strip()
+        lambda col: col.astype("string").str.strip()
     )
 
     # ----- Parse datetime text
