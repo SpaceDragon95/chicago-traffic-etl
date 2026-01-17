@@ -228,7 +228,7 @@ def derive_features(df):
 # Pipeline execution
 # ====================
 
-if __name__ == "__main__":
+def canonical_transform(df):
     df = pd.read_json(data_path)
     df = normalize_column_names(df)
     df = add_snapshot_timestamp(df)
@@ -237,5 +237,8 @@ if __name__ == "__main__":
     df = cast_numeric(df)
     df = parse_datetimes(df)
     df = derive_features(df)
-    print(df[["length_miles", "length_meters"]].head())
+    return df
 
+if __name__ == "__main__":
+    df = pd.read_json(data_path)
+    df = canonical_transform(df)
