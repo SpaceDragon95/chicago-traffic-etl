@@ -14,7 +14,7 @@ RAW_DATA_DIR.mkdir (parents=True, exist_ok=True)
 PAGE_LIMIT = 1000
 
 API_URL = "https://data.cityofchicago.org/resource/n4j6-wkkf.json"
-OUTPUT_FILE = RAW_DATA_DIR/"chicago_traffic_raw.json"
+RAW_JSON_OUTPUT = RAW_DATA_DIR/"chicago_traffic_raw.json"
 
 def extract_chicago_traffic():
     print("Requesting data from Chicago Open Data API...")
@@ -42,9 +42,9 @@ def extract_chicago_traffic():
         print(f"Retrieved {len(all_records)} records so far...")
 
     
-    with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
+    with open(RAW_JSON_OUTPUT, "w", encoding="utf-8") as f:
         json.dump(all_records, f, indent=2)
     print(f"Extraction complete. Total records: {len(all_records)}")
-    print(f"Raw data saved to {OUTPUT_FILE}")
+    print(f"Raw data saved to {RAW_JSON_OUTPUT}")
 if __name__ == "__main__":
     extract_chicago_traffic()        

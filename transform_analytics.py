@@ -46,3 +46,5 @@ if __name__ == "__main__":
     df_canonical = canonical_transform(df_raw)
     df_analytical = derive_analytical_features(df_canonical)
 
+print(df_analytical.dtypes)
+print(df_analytical.head())

@@ -229,7 +229,6 @@ def derive_features(df):
 # ====================
 
 def canonical_transform(df):
-    df = pd.read_json(data_path)
     df = normalize_column_names(df)
     df = add_snapshot_timestamp(df)
     df = canonicalize_ids(df)
