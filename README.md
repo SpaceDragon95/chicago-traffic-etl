@@ -108,4 +108,11 @@ python load.py
 - Managed cloud IAM permissions securely
 - Connected Python pipelines to PostgreSQL
 
+# Restructuring Plan
+
+## Outstanding Questions
+- Verify starting_heading data type.
+- Confirm whether comments vary by traffic reading.
+- Verify segment_id is always numeric.
+
   
