@@ -17,6 +17,11 @@ API_URL = "https://data.cityofchicago.org/resource/n4j6-wkkf.json"
 RAW_JSON_OUTPUT = RAW_DATA_DIR/"chicago_traffic_raw.json"
 
 def extract_chicago_traffic():
+    """
+    Retrieve all traffic records from the Chicago Open Data API
+    using pagination and save the raw JSON response locally.
+    """
+
     print("Requesting data from Chicago Open Data API...")
 
     all_records = []
@@ -46,5 +51,6 @@ def extract_chicago_traffic():
         json.dump(all_records, f, indent=2)
     print(f"Extraction complete. Total records: {len(all_records)}")
     print(f"Raw data saved to {RAW_JSON_OUTPUT}")
+    return all_records
 if __name__ == "__main__":
     extract_chicago_traffic()        
