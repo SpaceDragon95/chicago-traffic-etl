@@ -55,14 +55,14 @@ CREATE TABLE segment_dim (
 );
 
 CREATE TABLE traffic_fact(
-    snapshot_tc_utc TIMESTAMP NOT NULL,
+    snapshot_ts_utc TIMESTAMPZ NOT NULL,
     segment_id INTEGER NOT NULL,
     date_id INTEGER NOT NULL,
     time_id INTEGER NOT NULL,
     speed_band_id INTEGER NOT NULL,
-    last_update TIMESTAMP NOT NULL,
+    last_update TIMESTAMPZ NOT NULL,
     current_speed INTEGER,
-    has_traffic_data BOOLEAN
+    has_traffic_data BOOLEAN,
 
     PRIMARY KEY (segment_id, snapshot_tc_utc),
 

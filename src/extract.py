@@ -7,6 +7,7 @@ This script performs NO transformations
 import json
 from pathlib import Path
 import requests
+import pandas as pd
 
 RAW_DATA_DIR = Path ("data/raw")
 RAW_DATA_DIR.mkdir (parents=True, exist_ok=True)
@@ -46,11 +47,11 @@ def extract_chicago_traffic():
 
         print(f"Retrieved {len(all_records)} records so far...")
 
-    
     with open(RAW_JSON_OUTPUT, "w", encoding="utf-8") as f:
         json.dump(all_records, f, indent=2)
     print(f"Extraction complete. Total records: {len(all_records)}")
     print(f"Raw data saved to {RAW_JSON_OUTPUT}")
-    return all_records
+    raw_df = pd.DataFrame(all_records)
+    return raw_df
 if __name__ == "__main__":
     extract_chicago_traffic()        

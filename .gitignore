@@ -5,3 +5,5 @@ data/raw
 #Optional: OS/ editor noise
 .DS_Store
 __pycache__/
+# Legacy file kept locally for reference
+legacy/

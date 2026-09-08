@@ -8,7 +8,7 @@ command line.
 """
 
 # %%
-# Setup window
+# Load and inspect source data
 import pandas as pd
 
 df = pd.read_json("C:/Users/dawn/chicago-traffic-etl/data/raw/chicago_traffic_raw_sample.json")
