@@ -5,6 +5,7 @@ This script performs NO transformations
 """
 
 import json
+import logging
 from pathlib import Path
 import requests
 import pandas as pd
@@ -22,8 +23,8 @@ def extract_chicago_traffic():
     Retrieve all traffic records from the Chicago Open Data API
     using pagination and save the raw JSON response locally.
     """
-
-    print("Requesting data from Chicago Open Data API...")
+    
+    logger = logging.getLogger(__name__)
 
     all_records = []
     offset = 0
@@ -45,12 +46,12 @@ def extract_chicago_traffic():
         all_records.extend(batch)
         offset += PAGE_LIMIT
 
-        print(f"Retrieved {len(all_records)} records so far...")
+        logger.info("Retrieved %d records so far", len(all_records))
 
     with open(RAW_JSON_OUTPUT, "w", encoding="utf-8") as f:
         json.dump(all_records, f, indent=2)
-    print(f"Extraction complete. Total records: {len(all_records)}")
-    print(f"Raw data saved to {RAW_JSON_OUTPUT}")
+    logger.info("Total records extracted %d", len(all_records))
+    logger.info("Raw data saved to %s", RAW_JSON_OUTPUT)
     raw_df = pd.DataFrame(all_records)
     return raw_df
 if __name__ == "__main__":

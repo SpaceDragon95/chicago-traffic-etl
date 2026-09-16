@@ -10,6 +10,7 @@ local testing.
 """
 
 import pandas as pd
+import logging
 from datetime import datetime, timezone
 from transform_date_dim import date_dim
 from transform_time_dim import time_dim
@@ -347,6 +348,8 @@ def traffic_fact(df, date_df, time_df, speed_df):
     Raises:
         ValueError: If required columns or dimension values are missing.
     """
+    logger = logging.getLogger(__name__)
+    logger.info("Traffic fact received %d rows", len(df))
 
     df = normalize_column_names(df)
     df = standardize_raw_columns(df)
@@ -356,6 +359,7 @@ def traffic_fact(df, date_df, time_df, speed_df):
     df = add_speed_band_id(df, speed_df)
     df = select_fact_columns(df)
 
+    logger.info("Traffic fact produced %d rows", len(df))
     return df
 
 if __name__ == "__main__":

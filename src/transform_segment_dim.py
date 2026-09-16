@@ -7,7 +7,7 @@ prepares the data for loading into the segment dimension table.
 """
 
 import pandas as pd
-from temp_df import raw_df
+import logging
 
 # ====================
 # Schema/ columns groups
@@ -214,11 +214,15 @@ def segment_dim(df):
             The fully transformed segment dimension DataFrame.
     """
 
+    logger = logging.getLogger(__name__)
+    logger.info("Segment dimension received %d rows", len(df))
+
     df = normalize_column_names(df)
     df = standardize_string_columns(df)
     df = cast_numeric_columns(df)
     df = derive_features(df)
 
+    logger.info("Segment dimension produced %d row", len(df))
     return df
 
 if __name__ == "__main__":

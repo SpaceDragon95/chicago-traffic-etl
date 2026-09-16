@@ -7,3 +7,5 @@ data/raw
 __pycache__/
 # Legacy file kept locally for reference
 legacy/
+# Log files
+logs/*.log
