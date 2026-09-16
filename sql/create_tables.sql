@@ -61,7 +61,8 @@ CREATE TABLE IF NOT EXISTS traffic_fact(
     time_id INTEGER NOT NULL,
     speed_band_id INTEGER NOT NULL,
     last_update TIMESTAMPTZ NOT NULL,
-    current_speed INTEGER,
+    current_speed_mph INTEGER,
+    current_speed_kph NUMERIC(6,2),
     has_traffic_data BOOLEAN,
 
     PRIMARY KEY (segment_id, snapshot_ts_utc),
