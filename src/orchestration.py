@@ -6,6 +6,8 @@ from transform_date_dim import date_dim
 from transform_time_dim import time_dim
 from speed_band_lookup import create_speed_band_lookup
 from transform_traffic_fact import traffic_fact
+from load import create_db_engine, create_tables, load_dataframe
+
 
 def run_pipeline():
     """
@@ -47,15 +49,30 @@ def run_pipeline():
     # Call Speed dim function
     logger.info("Starting speed dimension transformation")
     speed_df = create_speed_band_lookup()
-    logger.into("Speed dimension transformation complete")
+    logger.info("Speed dimension transformation complete")
 
     # Call Traffic fact function
+    logger.info("Starting traffic fact transformation")
     traffic_df = traffic_fact(
         raw_df,
         date_df,
         time_df,
         speed_df
-)
+    )
+    logger.info("Traffic Fact tranformation completed")
+
+    #Call load functions
+    logger.info("Start database load")
+    engine = create_db_engine()
+    create_tables(engine)
+    load_dataframe(seg_df, "segment_dim", engine)
+    load_dataframe(time_df, "time_dim", engine)
+    load_dataframe(date_df, "date_dim", engine)
+
+    load_dataframe(traffic_df, "traffic_fact", engine)
+    logger.info("Database load complete")
+
+    logger.info("Chicago traffic ETL pipeline complete")
     
 if __name__ == "__main__":
     run_pipeline()

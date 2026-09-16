@@ -91,19 +91,22 @@ REQUIRED_COLUMNS =[
 # ====================
 def normalize_column_names(df):
     """
-    Clean and standardize string columns.
+    Normalize source column names to the project schema.
 
-    Removes leading and trailing whitespace, converts empty strings to
-    missing values, casts columns to the pandas string data type, and
-    applies title case or uppercase formatting where appropriate.
+    Renames raw Chicago traffic columns using the defined rename map
+    and validates that all required columns are present.
 
     Args:
         df (pandas.DataFrame):
-            DataFrame containing the normalized segment data.
+            DataFrame containing raw Chicago traffic data.
 
     Returns:
         pandas.DataFrame:
-            The DataFrame with standardized string columns.
+            DataFrame with normalized column names.
+
+    Raises:
+        ValueError:
+            If any required columns are missing.
     """
     df=df.rename(columns=RENAME_MAP)
     
@@ -222,11 +225,7 @@ def segment_dim(df):
     df = cast_numeric_columns(df)
     df = derive_features(df)
 
-    logger.info("Segment dimension produced %d row", len(df))
+    logger.info("Segment dimension produced %d rows", len(df))
     return df
-
-if __name__ == "__main__":
-    df = segment_dim(raw_df)
-    print(df.head())
 
 

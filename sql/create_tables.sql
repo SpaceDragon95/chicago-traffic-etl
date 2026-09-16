@@ -1,5 +1,5 @@
 
-CREATE TABLE speed_dim (
+CREATE TABLE IF NOT EXISTS speed_dim (
     speed_band_id INTEGER PRIMARY KEY,
     speed_band VARCHAR NOT NULL,
     min_speed INTEGER,
@@ -15,7 +15,7 @@ VALUES
     (4, 'Moderate', 26, 40),
     (5, 'Fast', 41, 70);
     
-CREATE TABLE date_dim (
+CREATE TABLE IF NOT EXISTS date_dim (
     date_id INTEGER PRIMARY KEY,
     day_of_week TEXT,
     day_of_month INTEGER,
@@ -30,7 +30,7 @@ CREATE TABLE date_dim (
     is_workday BOOLEAN
 );
 
-CREATE TABLE time_dim (
+CREATE TABLE IF NOT EXISTS time_dim (
     time_id INTEGER PRIMARY KEY,
     hour_of_day INTEGER,
     time_of_day_label TEXT,
@@ -38,7 +38,7 @@ CREATE TABLE time_dim (
     rush_hour_period VARCHAR
 );
 
-CREATE TABLE segment_dim (
+CREATE TABLE IF NOT EXISTS segment_dim (
     segment_id INTEGER PRIMARY KEY,
     street TEXT,
     direction CHAR(2),
@@ -54,17 +54,17 @@ CREATE TABLE segment_dim (
     comments TEXT
 );
 
-CREATE TABLE traffic_fact(
-    snapshot_ts_utc TIMESTAMPZ NOT NULL,
+CREATE TABLE IF NOT EXISTS traffic_fact(
+    snapshot_ts_utc TIMESTAMPTZ NOT NULL,
     segment_id INTEGER NOT NULL,
     date_id INTEGER NOT NULL,
     time_id INTEGER NOT NULL,
     speed_band_id INTEGER NOT NULL,
-    last_update TIMESTAMPZ NOT NULL,
+    last_update TIMESTAMPTZ NOT NULL,
     current_speed INTEGER,
     has_traffic_data BOOLEAN,
 
-    PRIMARY KEY (segment_id, snapshot_tc_utc),
+    PRIMARY KEY (segment_id, snapshot_ts_utc),
 
     FOREIGN KEY (segment_id)
         REFERENCES segment_dim(segment_id),

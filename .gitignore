@@ -9,3 +9,5 @@ __pycache__/
 legacy/
 # Log files
 logs/*.log
+# Environment files
+.env 
