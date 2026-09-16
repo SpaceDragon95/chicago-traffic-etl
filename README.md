@@ -3,7 +3,7 @@
 A modular ETL pipeline that extracts Chicago traffic congestion data from the Chicago Open Data API, transforms it using Python and pandas into a dimensional model, and loads structured fact and dimension data into PostgreSQL.
 
 ## Pipeline Architecture
-
+```
 Chicago Open Data API
         ↓
      extract.py
@@ -31,7 +31,7 @@ Chicago Open Data API
 │ speed_dim (seeded by SQL)   │
 │ traffic_fact                │
 └─────────────────────────────┘
-
+```
 ## Data Model
 
 The transformed traffic data is structured as a dimensional model centered on `traffic_fact`, with segment, date, time, and speed-band dimensions.
@@ -69,7 +69,8 @@ Dataset: Chicago Traffic Tracker - Congestion Estimates by Segments
 
 ## Project Structure
 
-```chicago-traffic-etl/
+```
+chicago-traffic-etl/
 │
 ├── src/
 │   ├── common.py
@@ -96,7 +97,8 @@ Dataset: Chicago Traffic Tracker - Congestion Estimates by Segments
 │
 ├── .gitignore
 ├── requirements.txt
-└── README.md```
+└── README.md
+```
 
 ## Transformations
 
